@@ -1,10 +1,28 @@
 import { useState, useEffect } from 'react'
 
 const STORAGE_KEY = 'grocery-items'
+const THEME_KEY = 'theme'
 
 function App() {
   const [items, setItems] = useState([])
   const [newItemName, setNewItemName] = useState('')
+  const [isDark, setIsDark] = useState(() => {
+    try {
+      const saved = localStorage.getItem(THEME_KEY)
+      return saved === 'dark'
+    } catch {
+      return false
+    }
+  })
+
+  useEffect(() => {
+    try {
+      document.documentElement.classList.toggle('dark', isDark)
+      localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light')
+    } catch (e) {
+      console.warn('Could not save theme to localStorage')
+    }
+  }, [isDark])
 
   useEffect(() => {
     try {
@@ -63,7 +81,32 @@ function App() {
   return (
     <div className="app-container">
       <header className="app-header">
-        <h1 className="app-title">Grocery List</h1>
+        <div className="header-top">
+          <h1 className="app-title">Grocery List</h1>
+          <button
+            className="theme-toggle"
+            onClick={() => setIsDark(!isDark)}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {isDark ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            )}
+          </button>
+        </div>
         <p className="app-subtitle">
           {items.length === 0
             ? 'No items yet'

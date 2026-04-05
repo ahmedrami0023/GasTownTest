@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@import "tailwindcss" prefix(tw);
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @font-face {
   font-family: 'DM Sans';
@@ -20,6 +22,20 @@
   --danger: #DC2626;
   --danger-hover: #B91C1C;
   --checkbox-checked: #2D5A3D;
+}
+
+.dark {
+  --bg: #1A1A1A;
+  --card: #2A2A2A;
+  --primary: #4ADE80;
+  --primary-hover: #22C55E;
+  --text-primary: #F7F5F2;
+  --text-secondary: #9CA3AF;
+  --text-purchased: #6B7280;
+  --border: #404040;
+  --danger: #F87171;
+  --danger-hover: #EF4444;
+  --checkbox-checked: #4ADE80;
 }
 
 * {
@@ -56,11 +72,40 @@ body {
   margin-bottom: 24px;
 }
 
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
 .app-title {
   font-size: 28px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 4px;
+}
+
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+}
+
+.dark .theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .app-subtitle {
